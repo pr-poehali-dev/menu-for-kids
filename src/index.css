@@ -167,6 +167,23 @@
   border-radius: 3px;
 }
 
+/* Print styles */
+@media print {
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+  .rounded-3xl {
+    border-radius: 0 !important;
+  }
+  .shadow-sm {
+    box-shadow: none !important;
+  }
+}
+
 /* Nav active link */
 .nav-link {
   position: relative;

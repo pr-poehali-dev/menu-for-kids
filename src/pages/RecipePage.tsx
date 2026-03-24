@@ -108,8 +108,8 @@ const RecipePage = () => {
           </div>
         )}
 
-        {/* Back button */}
-        <div className="pb-12 text-center">
+        {/* Buttons */}
+        <div className="pb-12 flex flex-col sm:flex-row gap-3 justify-center">
           <Button
             onClick={() => navigate("/")}
             className="bg-[var(--warm-terracotta)] hover:bg-[var(--warm-terracotta)]/90 text-white rounded-2xl px-8"
@@ -117,6 +117,15 @@ const RecipePage = () => {
           >
             <Icon name="ArrowLeft" size={18} className="mr-2" />
             Все рецепты
+          </Button>
+          <Button
+            onClick={() => window.print()}
+            variant="outline"
+            size="lg"
+            className="border-[var(--warm-honey)] text-[var(--warm-brown)] hover:bg-[var(--warm-peach)] rounded-2xl px-8 print:hidden"
+          >
+            <Icon name="Printer" size={18} className="mr-2" />
+            Распечатать
           </Button>
         </div>
       </div>
