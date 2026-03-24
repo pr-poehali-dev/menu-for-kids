@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { RECIPES } from "@/data/recipes";
 
 const HERO_IMAGE = "https://cdn.poehali.dev/projects/addbc5d3-6502-4ae2-9aa7-2839b5fe8247/files/d493f620-12a3-4516-b21b-a01badb5888f.jpg";
 
@@ -14,98 +16,6 @@ const NAV_LINKS = [
   { label: "Контакты", href: "#contacts" },
 ];
 
-const FEATURED_RECIPES = [
-  {
-    id: 1,
-    title: "Суп-пюре из тыквы и моркови",
-    age: "3–4 года",
-    time: "25 мин",
-    difficulty: "Просто",
-    emoji: "🎃",
-    desc: "Бархатистый, чуть сладковатый — дети сами просят добавку",
-    color: "bg-orange-50",
-  },
-  {
-    id: 2,
-    title: "Паровые котлетки из индейки",
-    age: "3–5 лет",
-    time: "30 мин",
-    difficulty: "Просто",
-    emoji: "🍗",
-    desc: "Мягкие, сочные, без специй — как в садике",
-    color: "bg-amber-50",
-  },
-  {
-    id: 3,
-    title: "Гречневая каша с маслом",
-    age: "3–5 лет",
-    time: "20 мин",
-    difficulty: "Легко",
-    emoji: "🌾",
-    desc: "Классический садиковский завтрак — питательный и любимый",
-    color: "bg-rose-50",
-  },
-  {
-    id: 4,
-    title: "Овощное рагу с кроликом",
-    age: "3–5 лет",
-    time: "40 мин",
-    difficulty: "Средне",
-    emoji: "🥕",
-    desc: "Сытное и нежное блюдо, богатое витаминами",
-    color: "bg-green-50",
-  },
-  {
-    id: 5,
-    title: "Творожная запеканка с изюмом",
-    age: "3–5 лет",
-    time: "35 мин",
-    difficulty: "Просто",
-    emoji: "🧀",
-    desc: "Воздушная и нежная — привет из детского сада",
-    color: "bg-yellow-50",
-  },
-  {
-    id: 6,
-    title: "Рисовый суп с фрикадельками",
-    age: "3–5 лет",
-    time: "35 мин",
-    difficulty: "Просто",
-    emoji: "🍚",
-    desc: "Согревающий лёгкий суп — главный хит детского меню",
-    color: "bg-blue-50",
-  },
-  {
-    id: 7,
-    title: "Макароны с томатным соусом",
-    age: "4–5 лет",
-    time: "20 мин",
-    difficulty: "Легко",
-    emoji: "🍝",
-    desc: "Простое любимое блюдо — без лука и острых специй",
-    color: "bg-red-50",
-  },
-  {
-    id: 8,
-    title: "Молочный суп с вермишелью",
-    age: "3–5 лет",
-    time: "15 мин",
-    difficulty: "Легко",
-    emoji: "🥛",
-    desc: "Нежный и сладкий — дети обожают его на завтрак",
-    color: "bg-purple-50",
-  },
-  {
-    id: 9,
-    title: "Паровая рыбка с картофельным пюре",
-    age: "3–5 лет",
-    time: "30 мин",
-    difficulty: "Просто",
-    emoji: "🐟",
-    desc: "Нежное рыбное филе на пару с пышным пюре",
-    color: "bg-teal-50",
-  },
-];
 
 const AGE_GROUPS = [
   { label: "3 года", emoji: "🧒‍♀️", count: 42, color: "bg-pink-100 text-pink-700" },
@@ -139,6 +49,7 @@ const TIPS = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAge, setSelectedAge] = useState("Все");
@@ -147,7 +58,7 @@ const Index = () => {
   const ages = ["Все", "3–4 года", "3–5 лет", "4–5 лет"];
   const difficulties = ["Все", "Легко", "Просто", "Средне"];
 
-  const filtered = FEATURED_RECIPES.filter((r) => {
+  const filtered = RECIPES.filter((r) => {
     const matchSearch =
       r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       r.desc.toLowerCase().includes(searchQuery.toLowerCase());
@@ -343,6 +254,7 @@ const Index = () => {
               {filtered.map((recipe) => (
                 <div
                   key={recipe.id}
+                  onClick={() => navigate(`/recipe/${recipe.id}`)}
                   className={`${recipe.color} rounded-3xl p-6 recipe-card cursor-pointer border border-white/60 shadow-sm`}
                 >
                   <div className="text-4xl mb-3">{recipe.emoji}</div>
@@ -360,6 +272,10 @@ const Index = () => {
                     <Badge variant="secondary" className="text-xs bg-white/70 text-[var(--warm-brown)] border-0">
                       {recipe.difficulty}
                     </Badge>
+                  </div>
+                  <div className="mt-4 flex items-center gap-1 text-xs text-[var(--warm-terracotta)] font-medium">
+                    <span>Открыть рецепт</span>
+                    <Icon name="ArrowRight" size={12} />
                   </div>
                 </div>
               ))}
