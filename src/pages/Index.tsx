@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { label: "Рецепты", href: "#recipes" },
   { label: "Меню на неделю", href: "/menu" },
   { label: "По возрастам", href: "#ages" },
-  { label: "Советы", href: "#tips" },
+  { label: "Советы", href: "/tips" },
   { label: "О проекте", href: "#about" },
   { label: "Контакты", href: "#contacts" },
 ];
