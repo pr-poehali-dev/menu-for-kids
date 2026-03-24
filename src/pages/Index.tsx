@@ -48,12 +48,29 @@ const TIPS = [
   },
 ];
 
+const useFavorites = () => {
+  const [favorites, setFavorites] = useState<number[]>(() => {
+    try { return JSON.parse(localStorage.getItem("favorites") || "[]"); } catch { return []; }
+  });
+  const toggle = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFavorites((prev) => {
+      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+      localStorage.setItem("favorites", JSON.stringify(next));
+      return next;
+    });
+  };
+  return { favorites, toggle };
+};
+
 const Index = () => {
   const navigate = useNavigate();
+  const { favorites, toggle } = useFavorites();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAge, setSelectedAge] = useState("Все");
   const [selectedDifficulty, setSelectedDifficulty] = useState("Все");
+  const [showFavOnly, setShowFavOnly] = useState(false);
 
   const ages = ["Все", "3–4 года", "3–5 лет", "4–5 лет"];
   const difficulties = ["Все", "Легко", "Просто", "Средне"];
@@ -64,7 +81,8 @@ const Index = () => {
       r.desc.toLowerCase().includes(searchQuery.toLowerCase());
     const matchAge = selectedAge === "Все" || r.age === selectedAge;
     const matchDiff = selectedDifficulty === "Все" || r.difficulty === selectedDifficulty;
-    return matchSearch && matchAge && matchDiff;
+    const matchFav = !showFavOnly || favorites.includes(r.id);
+    return matchSearch && matchAge && matchDiff && matchFav;
   });
 
   return (
@@ -241,6 +259,22 @@ const Index = () => {
             >
               {difficulties.map((d) => <option key={d}>{d}</option>)}
             </select>
+            <button
+              onClick={() => setShowFavOnly(!showFavOnly)}
+              className={`flex items-center gap-2 px-4 py-3 rounded-2xl border text-sm font-medium transition-colors ${
+                showFavOnly
+                  ? "bg-rose-50 border-rose-300 text-rose-600"
+                  : "border-[var(--warm-peach)] bg-white text-[var(--warm-brown)] hover:bg-[var(--warm-peach)]"
+              }`}
+            >
+              <Icon name="Heart" size={16} className={showFavOnly ? "fill-rose-500 text-rose-500" : ""} />
+              Избранное
+              {favorites.length > 0 && (
+                <span className="bg-rose-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {favorites.length}
+                </span>
+              )}
+            </button>
           </div>
 
           {/* Recipe Grid */}
@@ -257,7 +291,19 @@ const Index = () => {
                   onClick={() => navigate(`/recipe/${recipe.id}`)}
                   className={`${recipe.color} rounded-3xl p-6 recipe-card cursor-pointer border border-white/60 shadow-sm`}
                 >
-                  <div className="text-4xl mb-3">{recipe.emoji}</div>
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="text-4xl">{recipe.emoji}</span>
+                    <button
+                      onClick={(e) => toggle(recipe.id, e)}
+                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/60 transition-colors"
+                    >
+                      <Icon
+                        name="Heart"
+                        size={18}
+                        className={favorites.includes(recipe.id) ? "fill-rose-500 text-rose-500" : "text-[var(--warm-brown)]/30"}
+                      />
+                    </button>
+                  </div>
                   <h3 className="font-caveat text-xl text-[var(--warm-brown)] mb-2">{recipe.title}</h3>
                   <p className="text-sm text-[var(--warm-brown)]/70 mb-4 leading-relaxed">{recipe.desc}</p>
                   <div className="flex items-center gap-2 flex-wrap">

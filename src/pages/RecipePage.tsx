@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { RECIPES } from "@/data/recipes";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,17 @@ import Icon from "@/components/ui/icon";
 const RecipePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [favorites, setFavorites] = useState<number[]>(() => {
+    try { return JSON.parse(localStorage.getItem("favorites") || "[]"); } catch { return []; }
+  });
+  const toggleFav = () => {
+    setFavorites((prev) => {
+      const next = prev.includes(Number(id)) ? prev.filter((x) => x !== Number(id)) : [...prev, Number(id)];
+      localStorage.setItem("favorites", JSON.stringify(next));
+      return next;
+    });
+  };
+  const isFav = favorites.includes(Number(id));
   const recipe = RECIPES.find((r) => r.id === Number(id));
 
   if (!recipe) {
@@ -34,7 +46,22 @@ const RecipePage = () => {
             Назад к рецептам
           </button>
 
-          <div className="text-6xl mb-4">{recipe.emoji}</div>
+          <div className="flex items-start gap-4 mb-4">
+            <span className="text-6xl">{recipe.emoji}</span>
+            <button
+              onClick={toggleFav}
+              className="mt-2 flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/70 hover:bg-white transition-colors text-sm font-medium"
+            >
+              <Icon
+                name="Heart"
+                size={18}
+                className={isFav ? "fill-rose-500 text-rose-500" : "text-[var(--warm-brown)]/50"}
+              />
+              <span className={isFav ? "text-rose-600" : "text-[var(--warm-brown)]/70"}>
+                {isFav ? "В избранном" : "В избранное"}
+              </span>
+            </button>
+          </div>
           <h1 className="font-caveat text-4xl md:text-5xl text-[var(--warm-brown)] mb-3">
             {recipe.title}
           </h1>
