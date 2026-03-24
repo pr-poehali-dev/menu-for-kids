@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-const HERO_IMAGE = "https://cdn.poehali.dev/projects/addbc5d3-6502-4ae2-9aa7-2839b5fe8247/files/46955fb7-7765-495a-8e76-76f75dba4af2.jpg";
+const HERO_IMAGE = "https://cdn.poehali.dev/projects/addbc5d3-6502-4ae2-9aa7-2839b5fe8247/files/d493f620-12a3-4516-b21b-a01badb5888f.jpg";
 
 const NAV_LINKS = [
   { label: "Главная", href: "#home" },
@@ -78,11 +78,11 @@ const FEATURED_RECIPES = [
 ];
 
 const AGE_GROUPS = [
-  { label: "6–12 месяцев", emoji: "👶", count: 18, color: "bg-pink-100 text-pink-700" },
-  { label: "1–2 года", emoji: "🧒", count: 34, color: "bg-orange-100 text-orange-700" },
-  { label: "2–3 года", emoji: "🧒‍♀️", count: 42, color: "bg-amber-100 text-amber-700" },
-  { label: "3–5 лет", emoji: "👦", count: 56, color: "bg-green-100 text-green-700" },
-  { label: "5–7 лет", emoji: "🧒‍♂️", count: 38, color: "bg-blue-100 text-blue-700" },
+  { label: "3 года", emoji: "🧒‍♀️", count: 42, color: "bg-pink-100 text-pink-700" },
+  { label: "3,5 года", emoji: "👦", count: 38, color: "bg-orange-100 text-orange-700" },
+  { label: "4 года", emoji: "🧒", count: 56, color: "bg-amber-100 text-amber-700" },
+  { label: "4,5 года", emoji: "🧒‍♂️", count: 44, color: "bg-green-100 text-green-700" },
+  { label: "5 лет", emoji: "👧", count: 40, color: "bg-blue-100 text-blue-700" },
 ];
 
 const TIPS = [
@@ -177,7 +177,7 @@ const Index = () => {
           {/* Text side */}
           <div className="flex-1 flex flex-col justify-center px-6 md:px-16 py-12 md:py-20 texture-bg">
             <Badge className="self-start mb-4 bg-[var(--warm-honey)] text-[var(--warm-brown)] hover:bg-[var(--warm-honey)] border-0 text-sm px-3 py-1">
-              🌟 Для детей от 6 месяцев до 7 лет
+              🌟 Для детей от 3 до 5 лет
             </Badge>
             <h1 className="font-caveat text-5xl md:text-7xl text-[var(--warm-brown)] leading-tight mb-4 animate-fade-up">
               Вкусные рецепты<br />
