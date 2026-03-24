@@ -10,6 +10,7 @@ const HERO_IMAGE = "https://cdn.poehali.dev/projects/addbc5d3-6502-4ae2-9aa7-283
 const NAV_LINKS = [
   { label: "Главная", href: "#home" },
   { label: "Рецепты", href: "#recipes" },
+  { label: "Меню на неделю", href: "/menu" },
   { label: "По возрастам", href: "#ages" },
   { label: "Советы", href: "#tips" },
   { label: "О проекте", href: "#about" },
@@ -225,9 +226,18 @@ const Index = () => {
       <section id="recipes" className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-caveat text-4xl text-[var(--warm-brown)] text-center mb-2">Рецепты</h2>
-          <p className="text-center text-[var(--warm-brown)]/60 mb-8">
+          <p className="text-center text-[var(--warm-brown)]/60 mb-4">
             Простые и полезные блюда для маленьких гурманов
           </p>
+          <div className="flex justify-center mb-8">
+            <Button
+              onClick={() => navigate("/menu")}
+              variant="outline"
+              className="border-[var(--warm-honey)] text-[var(--warm-brown)] hover:bg-[var(--warm-peach)] rounded-2xl gap-2"
+            >
+              <span>📅</span> Посмотреть меню на неделю
+            </Button>
+          </div>
 
           {/* Search & Filters */}
           <div className="flex flex-col md:flex-row gap-3 mb-8">
