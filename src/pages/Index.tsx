@@ -49,6 +49,99 @@ const TIPS = [
   },
 ];
 
+const CONTACT_URL = "https://functions.poehali.dev/8b6680d4-49fa-42ab-bfab-61de23d3f944";
+
+const ContactForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch(CONTACT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (res.ok) {
+        setStatus("ok");
+        setName(""); setEmail(""); setMessage("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  if (status === "ok") {
+    return (
+      <div className="bg-white/20 rounded-3xl p-8 text-center text-white">
+        <div className="text-4xl mb-3">🥣</div>
+        <p className="font-caveat text-2xl mb-1">Сообщение отправлено!</p>
+        <p className="text-white/80 text-sm">Мы ответим вам в ближайшее время</p>
+        <button onClick={() => setStatus("idle")} className="mt-4 text-sm text-white/70 underline">
+          Отправить ещё
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="bg-white/15 rounded-3xl p-6 md:p-8 space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-white/80 text-sm mb-1">Ваше имя *</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            placeholder="Мама Оля"
+            className="w-full px-4 py-3 rounded-2xl bg-white/20 text-white placeholder:text-white/50 border border-white/30 focus:outline-none focus:border-white/70 text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-white/80 text-sm mb-1">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="olya@mail.ru"
+            className="w-full px-4 py-3 rounded-2xl bg-white/20 text-white placeholder:text-white/50 border border-white/30 focus:outline-none focus:border-white/70 text-sm"
+          />
+        </div>
+      </div>
+      <div>
+        <label className="block text-white/80 text-sm mb-1">Ваш вопрос *</label>
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+          rows={4}
+          placeholder="Напишите ваш вопрос или пожелание..."
+          className="w-full px-4 py-3 rounded-2xl bg-white/20 text-white placeholder:text-white/50 border border-white/30 focus:outline-none focus:border-white/70 text-sm resize-none"
+        />
+      </div>
+      {status === "error" && (
+        <p className="text-white/80 text-sm text-center">Что-то пошло не так. Попробуйте ещё раз.</p>
+      )}
+      <Button
+        type="submit"
+        disabled={status === "loading"}
+        size="lg"
+        className="w-full bg-white text-[var(--warm-terracotta)] hover:bg-white/90 rounded-2xl font-semibold disabled:opacity-60"
+      >
+        <Icon name={status === "loading" ? "Loader" : "Send"} size={18} className={`mr-2 ${status === "loading" ? "animate-spin" : ""}`} />
+        {status === "loading" ? "Отправляем..." : "Отправить сообщение"}
+      </Button>
+    </form>
+  );
+};
+
 const useFavorites = () => {
   const [favorites, setFavorites] = useState<number[]>(() => {
     try { return JSON.parse(localStorage.getItem("favorites") || "[]"); } catch { return []; }
@@ -385,28 +478,14 @@ const Index = () => {
 
       {/* CONTACTS */}
       <section id="contacts" className="py-16 px-4 bg-[var(--warm-terracotta)]">
-        <div className="max-w-2xl mx-auto text-center text-white">
-          <h2 className="font-caveat text-4xl mb-3">Есть вопросы?</h2>
-          <p className="text-white/80 mb-8">
-            Напишите нам — с удовольствием поможем подобрать меню для вашего малыша
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              className="bg-white text-[var(--warm-terracotta)] hover:bg-white/90 rounded-2xl font-semibold"
-            >
-              <Icon name="Mail" size={18} className="mr-2" />
-              Написать нам
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white/50 text-white hover:bg-white/10 rounded-2xl"
-            >
-              <Icon name="MessageCircle" size={18} className="mr-2" />
-              Telegram-сообщество
-            </Button>
+        <div className="max-w-xl mx-auto">
+          <div className="text-center text-white mb-8">
+            <h2 className="font-caveat text-4xl mb-3">Есть вопросы?</h2>
+            <p className="text-white/80">
+              Напишите нам — с удовольствием поможем подобрать меню для вашего малыша
+            </p>
           </div>
+          <ContactForm />
         </div>
       </section>
 

@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "Успешная отправка сообщения",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Тест", "email": "test@test.ru", "message": "Тестовое сообщение"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Ошибка — нет имени",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "", "message": "Привет"},
+      "expectedStatus": 400,
+      "bodyMatcher": "partial",
+      "expectedBody": {"error": "Заполните имя и сообщение"}
+    }
+  ]
+}
